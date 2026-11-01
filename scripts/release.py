@@ -13,6 +13,9 @@ import zipfile
 
 REPOSITORY = "LIghtJUNction/MagicNet"
 SOURCE_REPOSITORY = "LIghtJUNction/magicnet-android"
+# Mirrors may check out the module repository from another account; the recipe
+# boundary still has to point at a repository called magicnet-android.
+SOURCE_REPOSITORY_OVERRIDE = os.environ.get("SOURCE_REPOSITORY_OVERRIDE", "").strip()
 SOURCE = "generated/magicnet-android"
 
 
@@ -32,7 +35,10 @@ def metadata(root):
     source_sha = entry[2]
     require(git(source, "rev-parse", "HEAD") == source_sha, "Source checkout differs from gitlink")
     url = git(root, "config", "-f", ".gitmodules", "--get", f"submodule.{SOURCE}.url")
-    require(url == f"https://github.com/{SOURCE_REPOSITORY}.git", "Unexpected source repository")
+    allowed_urls = {f"https://github.com/{SOURCE_REPOSITORY}.git"}
+    if SOURCE_REPOSITORY_OVERRIDE:
+        allowed_urls.add(f"https://github.com/{SOURCE_REPOSITORY_OVERRIDE}.git")
+    require(url in allowed_urls, "Unexpected source repository")
     prop = tomllib.loads((source / "kam.toml").read_text())["prop"]
     module = dict(line.split("=", 1) for line in (source / "src/MagicNet/module.prop").read_text().splitlines()
                   if "=" in line and not line.startswith("#"))
