@@ -83,7 +83,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          repository: LIghtJUNction/magicnet-android
+          repository: ${{ github.repository_owner }}/magicnet-android
           ref: ${{ needs.plan.outputs.source_sha }}
           persist-credentials: false
           submodules: recursive
@@ -266,12 +266,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          GO111MODULE=off CGO_ENABLED=0 GOOS=android GOARCH=arm64 \
-            go build -trimpath -ldflags='-s -w -buildid=' \
-              -o "$RUNNER_TEMP/magicnet-components" ./installer/components
+          # Ship the Rust helper; the Go installer stays in-tree as the
+          # documented fallback but is no longer the released binary.
+          cargo ndk -t arm64-v8a build --release -p magicnet-components
+          helper="$PWD/target/aarch64-linux-android/release/magicnet-components"
+          test -x "$helper"
           bash scripts/quality-gate.sh components
           python3 scripts/package-components.py dist/MagicNet.zip \
-            --helper "$RUNNER_TEMP/magicnet-components" --output dist \
+            --helper "$helper" --output dist \
             --repository "$GITHUB_REPOSITORY"
           scripts/package-smoke.sh dist/MagicNet-full.zip
           cat dist/package-sizes.json >> "$GITHUB_STEP_SUMMARY"
@@ -286,6 +288,7 @@ jobs:
       - name: Record source provenance and updater
         env:
           RECIPE_SHA: ${{ github.sha }}
+          SOURCE_REPOSITORY: ${{ github.repository_owner }}/magicnet-android
           SOURCE_SHA: ${{ needs.plan.outputs.source_sha }}
           RELEASE_VERSION: ${{ needs.plan.outputs.version }}
           RELEASE_VERSION_CODE: ${{ needs.plan.outputs.version_code }}
@@ -296,8 +299,8 @@ jobs:
           from pathlib import Path
           import subprocess
 
-          data = {"schema": 1, "repository": "LIghtJUNction/MagicNet",
-                  "source_repository": "LIghtJUNction/magicnet-android",
+          data = {"schema": 1, "repository": os.environ["GITHUB_REPOSITORY"],
+                  "source_repository": os.environ["SOURCE_REPOSITORY"],
                   "recipe_sha": os.environ["RECIPE_SHA"], "source_sha": os.environ["SOURCE_SHA"],
                   "version": os.environ["RELEASE_VERSION"], "version_code": os.environ["RELEASE_VERSION_CODE"]}
           Path("dist/build-source.json").write_text(json.dumps(data, indent=2) + "\n")
