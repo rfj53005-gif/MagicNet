@@ -1,3 +1,8 @@
+> **Personal mirror**
+> This repository is a personal build mirror maintained by [rfj](https://github.com/rfj53005-gif).
+> **Upstream: [LIghtJUNction/MagicNet](https://github.com/LIghtJUNction/MagicNet)** (MIT, © 2025 LIghtJUNction).
+> Not affiliated with or endorsed by the upstream author; see [NOTICE.md](NOTICE.md) for local changes and licensing.
+
 # MagicNet
 
 Сборка доступна через [Build and release MagicNet](https://github.com/LIghtJUNction/MagicNet/actions/workflows/release.yml) на main. По умолчанию mode=build сохраняет установщик, автономный модуль, компоненты и контрольные суммы; mode=publish требует новой версии ПО, согласованных update.json и заметок к выпуску. Старые версии не перезаписываются. Сборка и проверка Android используют один фиксированный коммит исходников; публикация черновика возможна только после всех проверок, включая хеши загруженных файлов. Это не подтверждает работу на реальном устройстве arm64 или в реальной сети. Обычный push не запускает тяжёлую сборку; PR проходят лёгкую проверку рецептов.

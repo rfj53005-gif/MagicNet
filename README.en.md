@@ -1,3 +1,8 @@
+> **Personal mirror**
+> This repository is a personal build mirror maintained by [rfj](https://github.com/rfj53005-gif).
+> **Upstream: [LIghtJUNction/MagicNet](https://github.com/LIghtJUNction/MagicNet)** (MIT, © 2025 LIghtJUNction).
+> Not affiliated with or endorsed by the upstream author; see [NOTICE.md](NOTICE.md) for local changes and licensing.
+
 # MagicNet
 
 Build artifacts through [Build and release MagicNet](https://github.com/LIghtJUNction/MagicNet/actions/workflows/release.yml) on main. The default mode=build uploads the installer, offline module, components and checksums; mode=publish requires an explicitly prepared new software version, synchronized update.json files and release notes. Existing versions are never overwritten. Builds and Android acceptance use the same pinned implementation commit; all gates and uploaded asset digests must pass before a draft becomes public. These workflow checks do not establish arm64 device or real-network acceptance. Routine main pushes do not start this heavy build; PRs run lightweight recipe checks.
