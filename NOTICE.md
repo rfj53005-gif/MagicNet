@@ -16,6 +16,14 @@
 
 沿用上游 **MIT**（见 `LICENSE`）；子模块各自适用其许可，其中 `sing-box` 为 **GPL-3.0**。
 
+## 作者与致谢
+
+- **MagicNet 原作者 / 维护者：LIghtJUNction** — <https://github.com/LIghtJUNction>，
+  个人主页 <https://lightjunction.github.io/lightjunction/>，
+  X/Twitter [@LIghtJUNction_x](https://x.com/LIghtJUNction_x)。
+  项目自 2025-06-08 起以 MIT 许可发布；本仓库只是个人使用的衍生产物，**代码与设计的主要功劳属于原作者**。
+- 模块的构建框架 KamHooks / KamModuleX / kamfw 由 [MemDeco-WG](https://github.com/MemDeco-WG) 维护。
+
 ## 免责
 
 仅供个人使用，不提供任何担保；使用风险自负。
